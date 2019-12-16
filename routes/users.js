@@ -14,14 +14,12 @@ router.post('/login', function(req, res, next) {
   // 查询实例
 
 // 获取参数
-  var param = {
-    userName:req.body.userName,
-    userPwd:req.body.userPwd
-  }
+  var param = [req.body.userName, req.body.userPwd];
   console.log(req.body);
   var findOneSql = 'select * from t_user where user_name = ? and user_pwd=?';
-  db.query('select * from t_user', param,function(result,fields){
-    if(result){
+  db.query(findOneSql, param,function(result,fields){
+    console.log(result)
+    if(result.length>0){
       res.cookie("userId",result.userId,{
         path:'/',
         maxAge:100*60*60
