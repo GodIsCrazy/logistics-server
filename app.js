@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var tokenUtil =require('./util/tokenUtil.js')
-
+var statusCode = require('./util/enum/statusCode.js')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -28,11 +28,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 //全局拦截
 app.use(function (req, res, next) {
 
-  if (req.url != '/users/login1' && req.url != '/users/register'&& req.url != '/') {
+  if (req.url != '/users/login' && req.url != '/users/register'&& req.url != '/') {
     let token = req.headers.token;
     if (!tokenUtil.checkToken(token)) {
       console.log("token失效！");
-      res.send({status: 403, msg: '登录已过期,请重新登录'});
+      res.json({
+        status:statusCode.TOKEN_LOSR.code,
+        msg:statusCode.TOKEN_LOSR.description
+      })
     } else {
       next();
     }
