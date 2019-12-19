@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //全局拦截
 app.use(function (req, res, next) {
 
-  if (req.url != '/users/login' && req.url != '/users/register'&& req.url != '/') {
+  if (req.url != '/logistics/users/login' && req.url != '/') {
     let token = req.headers.token;
     if (!tokenUtil.checkToken(token)) {
       console.log("token失效！");
