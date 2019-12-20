@@ -22,7 +22,7 @@ router.post('/login', function(req, res, next) {
     if(result.length>0){
       var userPwd = result[0].password;
       if(bcrypt.compare(pass, userPwd)){
-        var token = tokenUtil.createToken(result[0].user_name,60*30);
+        var token = tokenUtil.createToken(result[0].user_name,60*60*24);
         console.log(token)
         res.json({
           status:statusCode.SUCCESS.code,

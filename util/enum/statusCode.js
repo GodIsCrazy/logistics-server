@@ -15,6 +15,14 @@ var StatusCode={
         code:'C00004',
         description:'没有权限'
     },
+    FAILED:{
+        code:'C00005',
+        description:'请求失败'
+    },
+    ERR:{
+        code:'C00006',
+        description:'后台异常'
+    },
     TOKEN_LOSR:{
         code:'C00007',
         description:'token失效'
