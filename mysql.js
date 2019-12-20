@@ -19,7 +19,7 @@ module.exports = {
                     throw err;
                 }
                 //将查询出来的数据返回给回调函数
-                callback && callback(results, fields);
+                return callback && callback(results, fields);
                 //results作为数据操作后的结果，fields作为数据库连接的一些字段
                 //停止链接数据库，必须再查询语句后，要不然一调用这个方法，就直接停止链接，数据操作就会失败
                 connection.end(function(err){

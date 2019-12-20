@@ -1,0 +1,2 @@
+登录接口 ： POST /logistics/users/login    参数： userName:string userPwd:string
+菜单权限 ： POST /logistics/menu/menuList  参数： userName:string

@@ -50,6 +50,10 @@ router.post('/login', function(req, res, next) {
 
 });
 
+router.post('addUser',function (req,res,next) {
+
+});
+
 function findOne(){
 
 }
