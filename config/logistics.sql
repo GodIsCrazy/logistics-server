@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 127.0.0.1
-Source Server Version : 50728
+Source Server         : localhost
+Source Server Version : 50626
 Source Host           : localhost:3306
 Source Database       : logistics
 
 Target Server Type    : MYSQL
-Target Server Version : 50728
+Target Server Version : 50626
 File Encoding         : 65001
 
-Date: 2019-12-20 14:26:13
+Date: 2019-12-24 09:39:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `name` varchar(50) DEFAULT NULL COMMENT '菜单名',
-  `url` varchar(255) DEFAULT NULL COMMENT 'url',
+  `path` varchar(255) DEFAULT NULL COMMENT 'url',
   `parent_id` int(11) DEFAULT NULL COMMENT '父类id',
   `sort` tinyint(4) DEFAULT NULL COMMENT '排序',
   `remark` text COMMENT '描述',
@@ -33,9 +33,9 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', '系统管理', ' ', '0', '1', null, 'md-settings');
+INSERT INTO `sys_menu` VALUES ('1', '系统管理', ' /sysSetting', '0', '1', null, 'md-settings');
 INSERT INTO `sys_menu` VALUES ('2', '用户管理', '/base/user', '1', '1', null, 'ios-person');
-INSERT INTO `sys_menu` VALUES ('3', '菜单管理', '/base/menu', '1', '2', null, 'md-list-box');
+INSERT INTO `sys_menu` VALUES ('3', '菜单管理', '/sysSetting/MenuManager', '1', '2', null, 'md-list-box');
 INSERT INTO `sys_menu` VALUES ('4', '角色管理', '/base/role', '1', '3', null, 'ios-people');
 
 -- ----------------------------
