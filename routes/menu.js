@@ -1,12 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var dbUtil = require('../util/dbUtil.js');
+var dbUtil = require('../util/db.js');
 var statusCode = require('../util/enum/statusCode.js')
 const tools = require('../api/index.js')
 
 //获取用户菜单权限
 router.get('/menuList', async function (req, res, next) {
-  console.log(req, 'res')
   var loginName = req.query.userName;
   let data = await tools.getMenuList(loginName)
   res.json({

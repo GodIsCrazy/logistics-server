@@ -31,7 +31,6 @@ app.use(function (req, res, next) {
 
   if (req.url != '/logistics/users/login' && req.url != '/') {
     let token = req.headers['auth-token'];
-    console.log(req.headers, 'headers')
     if (!tokenUtil.checkToken(token)) {
       console.log("token失效！");
       res.json({

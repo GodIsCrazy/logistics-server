@@ -1,5 +1,6 @@
 const SQL = require('../sql/index.js')
-const dbUtil = require('../util/dbUtil.js');
+const db = require('../util/db.js')
+const dbUtil = new db()
 const statusCode = require('../util/enum/statusCode.js')
 const utils = require('../util/utils.js')
 
