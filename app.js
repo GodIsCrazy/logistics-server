@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var tokenUtil =require('./util/tokenUtil.js')
+var tokenUtil = require('./util/tokenUtil.js')
 var statusCode = require('./util/enum/statusCode.js')
 
 var indexRouter = require('./routes/index');
@@ -30,12 +30,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function (req, res, next) {
 
   if (req.url != '/logistics/users/login' && req.url != '/') {
-    let token = req.headers.token;
+    let token = req.headers['auth-token'];
+    console.log(req.headers, 'headers')
     if (!tokenUtil.checkToken(token)) {
       console.log("token失效！");
       res.json({
-        status:statusCode.TOKEN_LOSR.code,
-        msg:statusCode.TOKEN_LOSR.description
+        status: statusCode.TOKEN_LOSR.code,
+        msg: statusCode.TOKEN_LOSR.description
       })
     } else {
       next();
@@ -50,12 +51,12 @@ app.use('/logistics/users', usersRouter);
 app.use('/logistics/menu', menuRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
