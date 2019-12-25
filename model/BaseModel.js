@@ -22,8 +22,13 @@ class BaseModel {
         return this.model.findAll({where: where})
     }
     // 带过滤条件的分页查询
-    findByPageFilter(where){
-        return this.model.findAndCountAll({where: where})
+    findByPageFilter(pageSize,currentPage,where){
+        const start = (currentPage - 1) * pageSize;
+        return this.model.findAndCountAll({
+            offset: start,
+            limit:pageSize?15:pageSize,
+            where: where
+            })
     }
     // 带过滤条件的排序精确查询
     findByFilterOrder(attributes, where, order){
@@ -35,6 +40,17 @@ class BaseModel {
         let whereOps = {}
         for(let k in where){whereOps[k] = {[Op.like]: '%'+where[k]+'%'}}
         return attributes ? this.model.findAll({attributes: attributes, where: whereOps}) : this.model.findAll({where: whereOps})
+    }
+
+    // 带过滤条件的模糊查询
+    findLikeByPageFilter(pageSize,currentPage, where){
+        const start = (currentPage - 1) * pageSize;
+        let whereOps = {}
+        for(let k in where){whereOps[k] = {[Op.like]: '%'+where[k]+'%'}}
+        return this.model.findAll({
+            offset: start,
+            limit:pageSize?15:pageSize,
+            where: whereOps})
     }
     // 带过滤条件的排序模糊查询
     findLikeByFilterOrder(attributes, where, order){
