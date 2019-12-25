@@ -54,14 +54,14 @@ router.post('/login', async (req, res, next) => {
 router.get('/userInfo',async function(req,res,next) {
     try {
       let userId = req.query.userId;
-      let menuList = await sysMenuService.getMenuListByUserId(userId)
+      let menuResult = await sysMenuService.getMenuListByUserId(userId)
       let userDetail = utils.formatSqlResult(await sysUserDetailService.baseFindByFilter({userId:userId}))
       res.json({
         status: statusCode.SUCCESS.code,
         msg: statusCode.SUCCESS.description,
         result: {
           userDetail:userDetail,
-          menuList: menuList,
+          menuList: menuResult.menuList,
           perssionBUtton:[]
           //permissionMenuList: menu.status === 'C00001' ? menu.result.menuList : []
         }
