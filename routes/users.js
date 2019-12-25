@@ -23,15 +23,16 @@ router.post('/login', async (req, res, next) => {
     var userPwd = user[0].password;
     if (bcrypt.compare(pass, userPwd)) {
       let token = tokenUtil.createToken(user[0].userName, 60 * 60 * 24);
-      let menu = await sysMenuService.getMenuListByUserId(user[0].id);
-      console.log(menu)
+      //let menu = await sysMenuService.getMenuListByUserId(user[0].id);
+      //console.log(menu)
       res.json({
         status: statusCode.SUCCESS.code,
         msg: statusCode.SUCCESS.description,
         result: {
           userName: user[0].loginName,
           token: token,
-          permissionMenuList: menu.status === 'C00001' ? menu.result.menuList : []
+          userId:user[0].id
+          //permissionMenuList: menu.status === 'C00001' ? menu.result.menuList : []
         }
       });
     }else {
@@ -49,6 +50,9 @@ router.post('/login', async (req, res, next) => {
 
 });
 
+router.get('userInfo',async function(req,res,next) {
+
+});
 
 
 router.post('addUser', function (req, res, next) {
