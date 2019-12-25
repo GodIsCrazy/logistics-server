@@ -4,7 +4,7 @@ var BaseModel = require('./BaseModel.js')
 var DataTypes = Sequelize.DataTypes
 class SysRoleModel extends BaseModel{
     constructor() {
-        super('sys_menu',{
+        super('sys_user_detail',{
             id:{type:Sequelize.STRING,defaultValue:DataTypes.UUIDV1,primaryKey:true},
             //可添加默认值方法 -- defaultValue:function(){ return ...}
             userId:{type:Sequelize.STRING,filed:'user_id'},

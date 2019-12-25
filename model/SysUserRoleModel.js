@@ -4,13 +4,11 @@ var BaseModel = require('./BaseModel.js')
 var DataTypes = Sequelize.DataTypes
 class SysRoleModel extends BaseModel{
     constructor() {
-        super('sys_role',{
+        super('sys_user_role',{
             id:{type:Sequelize.STRING,defaultValue:DataTypes.UUIDV1,primaryKey:true},
             //可添加默认值方法 -- defaultValue:function(){ return ...}
-            role:{type:Sequelize.STRING},
-            name:{type:Sequelize.STRING},
-            modules:{type:Sequelize.STRING},
-            describe:{type:Sequelize.STRING}
+            roleId:{type:Sequelize.STRING,filed: 'role_id'},
+            userId:{type:Sequelize.STRING,field:'user_id'},
         });
         this.model = super.getModel()
         // this.model.sync({alter:true})
