@@ -62,7 +62,7 @@ router.get('userInfo',async function(req,res,next) {
         result: {
           userDetail:userDetail,
           menuList: menuList,
-          roleButton:[]
+          perssion:[]
           //permissionMenuList: menu.status === 'C00001' ? menu.result.menuList : []
         }
       })
