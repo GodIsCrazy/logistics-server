@@ -53,7 +53,7 @@ router.post('/login', async (req, res, next) => {
 
 router.get('/userInfo',async function(req,res,next) {
     try {
-      let userId = req.query.id;
+      let userId = req.query.userId;
       let menuList = await sysMenuService.getMenuListByUserId(userId)
       let userDetail = utils.formatSqlResult(await sysUserDetailService.baseFindByFilter({userId:userId}))
       res.json({
@@ -68,8 +68,8 @@ router.get('/userInfo',async function(req,res,next) {
       })
     }catch (e) {
       res.json({
-        status: statusCode.ACCOUNT_ERROR.code,
-        msg: statusCode.ACCOUNT_ERROR.description
+        status: statusCode.ERR.code,
+        msg: statusCode.ERR.description
       })
     }
 });
