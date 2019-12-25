@@ -5,8 +5,8 @@ class BaseService{
     baseFindAll(attributes){
         return this.instance.findAll(attributes)
     }
-    baseFindByFilter(attributes, where){
-        return this.instance.findByFilter(attributes, where)
+    baseFindByFilter(where){
+        return this.instance.findByFilter(where)
     }
     baseFindByFilterOrder(attributes, where, order){
         return this.instance.findByFilterOrder(attributes, where, order)

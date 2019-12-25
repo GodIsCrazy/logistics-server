@@ -15,14 +15,9 @@ class SysUserModel extends BaseModel{
             isDelet:{type:Sequelize.STRING,defaultValue: 'false',field:'is_delete'}
         });
         this.model = super.getModel()
-        this.model.sync({alter:true})
+        // this.model.sync({alter:true})
+        this.model.sync()
     }
 }
 
-/*
-async function test() {
-   var result= await new SysUserModel().findByFilter({loginName: '测试'});
-    console.log(result)
-}
-test()*/
 module.exports = new SysUserModel()

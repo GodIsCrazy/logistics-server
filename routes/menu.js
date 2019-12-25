@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var dbUtil = require('../util/db.js');
+var sysMenuService = require('../service/SysMenuService.js')
 var statusCode = require('../util/enum/statusCode.js')
 const tools = require('../api/index.js')
 
@@ -14,7 +14,7 @@ router.get('/menuList', async function (req, res, next) {
 });
 router.post('/addMenu', async function (req, res, next) {
   var params = req.body;
-  let result = await dbUtil.insertSql('sys_menu', params);
+  let result = await sysMenuService.baseCreate(params);
   res.json({
     status: statusCode.SUCCESS.code,
     msg: statusCode.SUCCESS.description
@@ -23,8 +23,8 @@ router.post('/addMenu', async function (req, res, next) {
 
 router.post('/updateMenu', async function (req, res, next) {
   var params = req.body;
-  var whereSql = '1 = 1 and id = ' + req.body.id;
-  let result = await dbUtil.updateSql('sys_menu', params, whereSql);
+  var where = {id:params.id}
+  let result = await sysMenuService.baseUpdate(params,where)
   res.json({
     status: statusCode.SUCCESS.code,
     msg: statusCode.SUCCESS.description
@@ -33,8 +33,8 @@ router.post('/updateMenu', async function (req, res, next) {
 })
 router.get('/deleteMenu', async function (req, res, next) {
   var id = req.query.id;
-  var whereSql = '1 = 1 and id = ' + id;
-  let result = await dbUtil.deleteSql('sys_menu', whereSql);
+  var where = {id:id}
+  let result = await sysMenuService.baseDelete(where)
   res.json({
     status: statusCode.SUCCESS.code,
     msg: statusCode.SUCCESS.description
