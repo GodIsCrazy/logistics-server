@@ -7,6 +7,7 @@ const salt = bcrypt.genSaltSync(10);
 const tokenUtil = require('../util/tokenUtil.js')
 const statusCode = require('../util/enum/statusCode.js')
 const sysMenuService = require('../service/SysMenuService.js')
+const sysUserDetailService = require('../service/SysMenuService.js')
 const utils = require('../util/utils.js')
 /* GET users listing. */
 router.get('/login', function (req, res, next) {
@@ -51,7 +52,26 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.get('userInfo',async function(req,res,next) {
-
+    try {
+      let userId = req.query.id;
+      let menuList = await sysMenuService.getMenuListByUserId(userId)
+      let userDetail = utils.formatSqlResult(await sysUserDetailService.baseFindByFilter({userId:userId}))
+      res.json({
+        status: statusCode.SUCCESS.code,
+        msg: statusCode.SUCCESS.description,
+        result: {
+          userDetail:userDetail,
+          menuList: menuList,
+          roleButton:[]
+          //permissionMenuList: menu.status === 'C00001' ? menu.result.menuList : []
+        }
+      })
+    }catch (e) {
+      res.json({
+        status: statusCode.ACCOUNT_ERROR.code,
+        msg: statusCode.ACCOUNT_ERROR.description
+      })
+    }
 });
 
 
