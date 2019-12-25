@@ -1,6 +1,6 @@
 
-var BaseService = require('./BaseService.js');
-var SysUserModel = require('../model/SysUserModel.js')
+const BaseService = require('./BaseService.js');
+const SysUserModel = require('../model/SysUserModel.js')
 class SysUserService extends BaseService{
     constructor(){
         super(SysUserModel)

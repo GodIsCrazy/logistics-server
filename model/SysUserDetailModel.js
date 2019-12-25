@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
-var sequelize = require('../util/db.js');
-var BaseModel = require('./BaseModel.js')
-var DataTypes = Sequelize.DataTypes
+const sequelize = require('../util/db.js');
+const BaseModel = require('./BaseModel.js')
+const DataTypes = Sequelize.DataTypes
 class SysRoleModel extends BaseModel{
     constructor() {
         super('sys_user_detail',{

@@ -5,6 +5,9 @@ class BaseService{
     baseFindAll(attributes){
         return this.instance.findAll(attributes)
     }
+    baseFindPageByFilter(where){
+        return this.instance.findByPageFilter(where)
+    }
     baseFindByFilter(where){
         return this.instance.findByFilter(where)
     }
