@@ -51,7 +51,7 @@ router.post('/login', async (req, res, next) => {
 
 });
 
-router.get('userInfo',async function(req,res,next) {
+router.get('/userInfo',async function(req,res,next) {
     try {
       let userId = req.query.id;
       let menuList = await sysMenuService.getMenuListByUserId(userId)
@@ -62,7 +62,7 @@ router.get('userInfo',async function(req,res,next) {
         result: {
           userDetail:userDetail,
           menuList: menuList,
-          perssion:[]
+          perssionBUtton:[]
           //permissionMenuList: menu.status === 'C00001' ? menu.result.menuList : []
         }
       })
@@ -75,7 +75,7 @@ router.get('userInfo',async function(req,res,next) {
 });
 
 
-router.post('addUser', function (req, res, next) {
+router.post('/addUser', function (req, res, next) {
 
 });
 
