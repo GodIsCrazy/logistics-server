@@ -6,8 +6,8 @@ const tools = require('../api/index.js')
 
 //获取用户菜单权限
 router.get('/menuList', async function (req, res, next) {
-  var loginName = req.query.userName;
-  let data = await tools.getMenuList(loginName)
+  var userId = req.query.userId;
+  let data = await sysMenuService.getMenuListByUserId(userId)
   res.json({
     ...data
   })
