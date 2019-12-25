@@ -7,7 +7,7 @@ const salt = bcrypt.genSaltSync(10);
 const tokenUtil = require('../util/tokenUtil.js')
 const statusCode = require('../util/enum/statusCode.js')
 const sysMenuService = require('../service/SysMenuService.js')
-const sysUserDetailService = require('../service/SysMenuService.js')
+const sysUserDetailService = require('../service/SysUserDetailService.js')
 const utils = require('../util/utils.js')
 /* GET users listing. */
 router.get('/login', function (req, res, next) {
@@ -67,6 +67,7 @@ router.get('/userInfo',async function(req,res,next) {
         }
       })
     }catch (e) {
+      console.log(e)
       res.json({
         status: statusCode.ERR.code,
         msg: statusCode.ERR.description
