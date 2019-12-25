@@ -61,7 +61,7 @@ router.get('/userInfo',async function(req,res,next) {
         msg: statusCode.SUCCESS.description,
         result: {
           userDetail:userDetail,
-          menuList: menuResult.result,
+          menuList: menuResult.result.menuList,
           perssionBUtton:[]
           //permissionMenuList: menu.status === 'C00001' ? menu.result.menuList : []
         }
