@@ -16,6 +16,7 @@ router.get('/menuList', async function (req, res, next) {
     }
   })
 });
+/* 已经弃用 */
 router.post('/addMenu', async function (req, res, next) {
   var params = req.body;
   let result = await sysMenuService.baseCreate(params);
@@ -24,17 +25,24 @@ router.post('/addMenu', async function (req, res, next) {
     msg: statusCode.SUCCESS.description
   })
 })
+/* 菜单的新增&修改 */
+router.post('/saveMenu', async function (req, res, next) {
+  let params = req.body;
+  let result = []
+  if (params.id) { // 传id为修改
+    var where = { id: params.id }
+    result = await sysMenuService.baseUpdate(params, where)
+  } else {
+    result = await sysMenuService.baseCreate(params);
+  }
 
-router.post('/updateMenu', async function (req, res, next) {
-  var params = req.body;
-  var where = { id: params.id }
-  let result = await sysMenuService.baseUpdate(params, where)
   res.json({
     status: statusCode.SUCCESS.code,
     msg: statusCode.SUCCESS.description
   })
 
 })
+/* 删除菜单 */
 router.get('/deleteMenu', async function (req, res, next) {
   var id = req.query.id;
   var where = { id: id }
@@ -66,7 +74,30 @@ router.get('/getFirstMenu', async (req, res, next) => {
       result
     })
   }
-
+})
+/* 根据菜单id获取菜单信息 */
+router.get('/getMenuDetailById', async (req, res, next) => {
+  let status = ''
+  let msg = ''
+  let result = []
+  let where = {
+    id: req.query && req.query.id
+  }
+  try {
+    result = await sysMenuService.baseFindByFilter(where)[0]
+    status = statusCode.SUCCESS.code,
+      msg = statusCode.SUCCESS.description
+  } catch (error) {
+    status = statusCode.FAILED.code,
+      msg = statusCode.FAILED.description
+    result = error
+  } finally {
+    res.json({
+      status,
+      msg,
+      result
+    })
+  }
 })
 
 module.exports = router;
