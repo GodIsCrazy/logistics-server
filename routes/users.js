@@ -19,7 +19,7 @@ router.get('/login', function (req, res, next) {
 
 router.post('/login', async (req, res, next) => {
   let pass = req.body.userPwd;
-  let user =utils.formatSqlResult(await sysUserService.baseFindByFilter({loginName: req.body.userName}));
+  let user = utils.formatSqlResult(await sysUserService.baseFindByFilter({loginName: req.body.userName}));
   if(user.length>0){
     var userPwd = user[0].password;
     if (bcrypt.compare(pass, userPwd)) {

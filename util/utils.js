@@ -25,7 +25,7 @@ module.exports = {
     }
     return []
   },
-  async formatSqlResult(result){
+  formatSqlResult(result){
     if (result.length>0){
       let resultArr =[];
       for (let i = 0;i<result.length;i++){
