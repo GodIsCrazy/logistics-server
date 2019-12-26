@@ -9,7 +9,11 @@ router.get('/menuList', async function (req, res, next) {
   let query = req.query
   let data = await sysMenuService.getMenuBylikeNameOrPath(query)
   res.json({
-    ...data
+    status: statusCode.SUCCESS.code,
+    msg: statusCode.SUCCESS.description,
+    result: {
+      ...data
+    }
   })
 });
 router.post('/addMenu', async function (req, res, next) {

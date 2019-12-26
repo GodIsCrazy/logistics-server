@@ -42,7 +42,7 @@ class SysMenuService extends BaseService {
     }
     let result = await SysMenuModel.findByPageFilter(pageSize, currentPage, where);
     return {
-      items: result.rows,
+      items: utils.formatMenu(utils.formatSqlResult(result.rows)),
       currentPage: parseInt(currentPage || 1),
       pageSize: parseInt(pageSize || 15),
       recordCount: result.rows.length
