@@ -10,11 +10,13 @@ module.exports = {
   formatMenu (menuList, parentId) {
     if (menuList.length > 0) {
       if (parentId) { // 筛选子菜单
+        // console.log(parentId, 'parentId')
         return menuList.filter(res => res.parent_id === parentId)
       } else {
         let firstMenu = menuList.filter(res => res.parent_id === '')
         // console.log(firstMenu, '父菜单')
         let menu = firstMenu.map(menuItem => {
+          // console.log(menuItem, '子菜单111')
           let children = this.formatMenu(menuList, menuItem.id)
           menuItem.children = children
           return menuItem
@@ -25,14 +27,14 @@ module.exports = {
     }
     return []
   },
-  formatSqlResult(result){
-    if (result.length>0){
-      let resultArr =[];
-      for (let i = 0;i<result.length;i++){
-        resultArr[i]=result[i].dataValues;
+  formatSqlResult (result) {
+    if (result.length > 0) {
+      let resultArr = [];
+      for (let i = 0; i < result.length; i++) {
+        resultArr.push(result[i].dataValues)
       }
-      return result;
-    }else{
+      return resultArr;
+    } else {
       return []
     }
   }
