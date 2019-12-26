@@ -45,6 +45,29 @@ router.get('/deleteMenu', async function (req, res, next) {
   })
 
 })
+/* *
+ * 获取一级菜单
+  */
+router.get('/getFirstMenu', async (req, res, next) => {
+  let status = ''
+  let msg = ''
+  let result = []
+  try {
+    result = await sysMenuService.getFirstMenu()
+    status = statusCode.SUCCESS.code,
+      msg = statusCode.SUCCESS.description
+  } catch (error) {
+    status = statusCode.FAILED.code,
+      msg = statusCode.FAILED.description
+  } finally {
+    res.json({
+      status,
+      msg,
+      result
+    })
+  }
+
+})
 
 module.exports = router;
 

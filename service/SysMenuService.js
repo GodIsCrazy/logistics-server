@@ -15,20 +15,20 @@ class SysMenuService extends BaseService {
     let roleId = await sequelize.query('select role_id from sys_user_role where user_id = ? ',
       { replacements: [id], type: Sequelize.QueryTypes.SELECT });
     if (roleId.length > 0) {
-      this.instance.setBelongToMany(SysRoleModel.model,SysRoleMenuModel.model)
-      SysRoleModel.setBelongToMany(this.instance.model,SysRoleMenuModel.model)
+      this.instance.setBelongToMany(SysRoleModel.model, SysRoleMenuModel.model)
+      SysRoleModel.setBelongToMany(this.instance.model, SysRoleMenuModel.model)
       let result = await this.instance.model.findAll({
-        include:[{
-          model:SysRoleModel.model,
-          where:{id:roleId[0].role_id},
-          attributes:[]
+        include: [{
+          model: SysRoleModel.model,
+          where: { id: roleId[0].role_id },
+          attributes: []
         }],
         includeIgnoreAttributes: false,
-        row:true
+        row: true
       })
       // let menuList = await sequelize.query('select m.*,m.parent_id as parentId from sys_menu m left join sys_role_menu rm on rm.menu_id = m.id where rm.role_id = ? ',
       //   { replacements: [roleId[0].role_id], type: Sequelize.QueryTypes.SELECT });
-      let menuList =utils.formatSqlResult(result)
+      let menuList = utils.formatSqlResult(result)
       return utils.formatMenu(menuList)
     } else {
       return []
@@ -47,6 +47,12 @@ class SysMenuService extends BaseService {
       pageSize: parseInt(pageSize || 15),
       recordCount: result.rows.length
     }
+  }
+
+  async getFirstMenu () {
+    let where = { parentId: '' }
+    let result = await SysMenuModel.findByFilter(where)
+    return utils.formatSqlResult(result)
   }
 }
 /*new SysMenuService().getMenuBylikeNameOrPath(3,1,'')
