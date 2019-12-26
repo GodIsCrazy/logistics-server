@@ -2,6 +2,8 @@ const Sequelize = require('sequelize');
 const sequelize = require('../util/db.js');
 const BaseService = require('./BaseService.js');
 const SysMenuModel = require('../model/SysMenuModel.js')
+const SysRoleModel = require('../model/SysRoleModel.js')
+const SysRoleMenuModel = require('../model/SysRoleMenuModel.js')
 const utils = require('../util/utils.js')
 const statusCode = require('../util/enum/statusCode.js')
 const Op = Sequelize.Op;
@@ -13,8 +15,20 @@ class SysMenuService extends BaseService {
     let roleId = await sequelize.query('select role_id from sys_user_role where user_id = ? ',
       { replacements: [id], type: Sequelize.QueryTypes.SELECT });
     if (roleId.length > 0) {
-      let menuList = await sequelize.query('select m.* from sys_menu m left join sys_role_menu rm on rm.menu_id = m.id where rm.role_id = ? ',
-        { replacements: [roleId[0].role_id], type: Sequelize.QueryTypes.SELECT });
+      this.instance.setBelongToMany(SysRoleModel.model,SysRoleMenuModel.model)
+      SysRoleModel.setBelongToMany(this.instance.model,SysRoleMenuModel.model)
+      let result = await this.instance.model.findAll({
+        include:[{
+          model:SysRoleModel.model,
+          where:{id:roleId[0].role_id},
+          attributes:[]
+        }],
+        includeIgnoreAttributes: false,
+        row:true
+      })
+      // let menuList = await sequelize.query('select m.*,m.parent_id as parentId from sys_menu m left join sys_role_menu rm on rm.menu_id = m.id where rm.role_id = ? ',
+      //   { replacements: [roleId[0].role_id], type: Sequelize.QueryTypes.SELECT });
+      let menuList =utils.formatSqlResult(result)
       return utils.formatMenu(menuList)
     } else {
       return []

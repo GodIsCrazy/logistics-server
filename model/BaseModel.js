@@ -12,6 +12,9 @@ class BaseModel {
     getModel(){
         return this.model;
     }
+    setBelongToMany(decModel,throughModel){
+        this.model.belongsToMany(decModel,{through:throughModel})
+    }
     /**************************************查询方法**************************************/
     // 不带过滤条件的查询
     findAll(attributes){

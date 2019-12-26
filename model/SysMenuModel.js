@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/db.js');
 const BaseModel = require('./BaseModel.js')
+const SysRoleModel = require('./SysRoleModel.js')
+const SysRoleMenuModel = require('./SysRoleMenuModel.js')
 const DataTypes = Sequelize.DataTypes
 class SysMenuModel extends BaseModel{
     constructor() {
@@ -17,6 +19,7 @@ class SysMenuModel extends BaseModel{
         this.model = super.getModel()
         // this.model.sync({alter:true})
         this.model.sync()
+        this.model.belongsToMany(SysRoleModel.model,{through:SysRoleMenuModel.model})
     }
 }
 /*new SysMenuModel().createBatch([

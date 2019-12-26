@@ -14,7 +14,7 @@ class SysRoleModel extends BaseModel{
         });
         this.model = super.getModel()
         // this.model.sync({alter:true})
-        this.model.sync({alter:true})
+        this.model.sync()
     }
 }
 /*new SysMenuModel().createBatch([

@@ -10,9 +10,9 @@ module.exports = {
   formatMenu (menuList, parentId) {
     if (menuList.length > 0) {
       if (parentId) { // 筛选子菜单
-        return menuList.filter(res => res.parent_id === parentId)
+        return menuList.filter(res => res.parentId === parentId)
       } else {
-        let firstMenu = menuList.filter(res => res.parent_id === '')
+        let firstMenu = menuList.filter(res => res.parentId === '')
         // console.log(firstMenu, '父菜单')
         let menu = firstMenu.map(menuItem => {
           let children = this.formatMenu(menuList, menuItem.id)
@@ -31,7 +31,7 @@ module.exports = {
       for (let i = 0;i<result.length;i++){
         resultArr[i]=result[i].dataValues;
       }
-      return result;
+      return resultArr;
     }else{
       return []
     }

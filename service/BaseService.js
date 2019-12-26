@@ -2,6 +2,7 @@ class BaseService{
     constructor(instance){
         this.instance = instance
     }
+    baseSet
     baseFindAll(attributes){
         return this.instance.findAll(attributes)
     }
