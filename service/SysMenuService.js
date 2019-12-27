@@ -50,7 +50,9 @@ class SysMenuService extends BaseService {
   }
 
   async getFirstMenu () {
-    let where = { parentId: '' }
+    let where = {}
+    where[Op.or] = [{ parentId: '' }, { parentId: null }]
+
     let result = await SysMenuModel.findByFilter(where)
     return utils.formatSqlResult(result)
   }

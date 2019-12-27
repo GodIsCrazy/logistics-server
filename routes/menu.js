@@ -3,6 +3,7 @@ var router = express.Router();
 var sysMenuService = require('../service/SysMenuService.js')
 var statusCode = require('../util/enum/statusCode.js')
 const tools = require('../api/index.js')
+const utils = require('../util/utils.js')
 
 //获取用户菜单权限
 router.get('/menuList', async function (req, res, next) {
@@ -44,14 +45,28 @@ router.post('/saveMenu', async function (req, res, next) {
 })
 /* 删除菜单 */
 router.get('/deleteMenu', async function (req, res, next) {
-  var id = req.query.id;
-  var where = { id: id }
-  let result = await sysMenuService.baseDelete(where)
-  res.json({
-    status: statusCode.SUCCESS.code,
-    msg: statusCode.SUCCESS.description
-  })
-
+  let data = {}
+  try {
+    const id = req.query.id
+    let where = { id: id }
+    let deleteWhere = { parentId: id }
+    let result = null
+    let sonMenus = await sysMenuService.baseFindByFilter(deleteWhere)
+    if (sonMenus.length <= 0) {
+      result = await sysMenuService.baseDelete(where)
+      data.status = statusCode.SUCCESS.code
+      data.msg = statusCode.SUCCESS.description
+      data.result = result
+    }
+    throw ("存在子菜单，不能删除")
+  } catch (error) {
+    data.status = statusCode.FAILED.code
+    data.msg = error
+  } finally {
+    res.json({
+      ...data
+    })
+  }
 })
 /* *
  * 获取一级菜单
@@ -84,12 +99,14 @@ router.get('/getMenuDetailById', async (req, res, next) => {
     id: req.query && req.query.id
   }
   try {
-    result = await sysMenuService.baseFindByFilter(where)[0]
-    status = statusCode.SUCCESS.code,
-      msg = statusCode.SUCCESS.description
+    result = utils.formatSqlResult(await sysMenuService.baseFindByFilter(where))[0]
+    status = statusCode.SUCCESS.code
+    msg = statusCode.SUCCESS.description
+    console.log(result)
   } catch (error) {
-    status = statusCode.FAILED.code,
-      msg = statusCode.FAILED.description
+    console.log(error)
+    status = statusCode.FAILED.code
+    msg = statusCode.FAILED.description
     result = error
   } finally {
     res.json({
