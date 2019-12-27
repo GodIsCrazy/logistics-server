@@ -7,7 +7,7 @@ var tokenUtil = require('./util/tokenUtil.js')
 var statusCode = require('./util/enum/statusCode.js')
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/user');
 var menuRouter = require('./routes/menu');
 
 var app = express();
@@ -46,7 +46,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/logistics', indexRouter);
-app.use('/logistics/users', usersRouter);
+app.use('/logistics/user', usersRouter);
 app.use('/logistics/menu', menuRouter);
 
 // catch 404 and forward to error handler
