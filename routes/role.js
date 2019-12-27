@@ -6,37 +6,13 @@ const bcrypt = require('bcryptjs')
 const salt = bcrypt.genSaltSync(10);
 const tokenUtil = require('../util/tokenUtil.js')
 const statusCode = require('../util/enum/statusCode.js')
-const sysMenuService = require('../service/SysMenuService.js')
+const sysRoleService = require('../service/sysRoleService.js')
 const sysUserDetailService = require('../service/SysUserDetailService.js')
 const utils = require('../util/utils.js')
 /* GET users listing. */
 
 
-router.get('/userInfo',async function(req,res,next) {
-    try {
-      let userId = req.query.userId;
-      let menuList = await sysMenuService.getMenuListByUserId(userId)
-      let userDetail = utils.formatSqlResult(await sysUserDetailService.baseFindByFilter({userId:userId}))
-      res.json({
-        status: statusCode.SUCCESS.code,
-        msg: statusCode.SUCCESS.description,
-        result: {
-          userDetail:userDetail,
-          menuList: menuList,
-          perssionBUtton:[]
-          //permissionMenuList: menu.status === 'C00001' ? menu.result.menuList : []
-        }
-      })
-    }catch (e) {
-      console.log(e)
-      res.json({
-        status: statusCode.ERR.code,
-        msg: statusCode.ERR.description
-      })
-    }
-});
-
-router.get('/userList',async function(req,res,next) {
+router.get('/roleListByPage',async function(req,res,next) {
   let query = req.query
   console.log(query)
   let resJson = [];
@@ -55,11 +31,10 @@ router.get('/userList',async function(req,res,next) {
   }
 })
 
-router.get('/getUserDetailById',async function(req,res,next) {
-  let id = req.query.id
-  let resJson = {};
+router.get('/getRoleList',async function(req,res,next) {
+  let resJson = [];
   try {
-    resJson.result = await sysUserService.getUserAndRoleById(id)
+    resJson.result = await sysRoleService.getRoleList();
     resJson.status = statusCode.SUCCESS.code;
     resJson.msg = statusCode.SUCCESS.description
   }catch (e) {
@@ -72,18 +47,5 @@ router.get('/getUserDetailById',async function(req,res,next) {
     })
   }
 })
-
-
-router.post('/addUser', function (req, res, next) {
-
-});
-
-function findOne () {
-
-}
-
-
-
-
 
 module.exports = router;

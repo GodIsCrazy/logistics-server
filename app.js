@@ -9,7 +9,7 @@ var statusCode = require('./util/enum/statusCode.js')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/user');
 var menuRouter = require('./routes/menu');
-
+var roleRouter = require('./routes/role');
 var app = express();
 
 // view engine setup
@@ -48,6 +48,7 @@ app.use(function (req, res, next) {
 app.use('/logistics', indexRouter);
 app.use('/logistics/user', usersRouter);
 app.use('/logistics/menu', menuRouter);
+app.use('/logistics/role', roleRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -12,7 +12,7 @@ class SysUserModel extends BaseModel{
             password:{type:Sequelize.STRING},
             email:{type:Sequelize.STRING},
             userType:{type:Sequelize.STRING,defaultValue:0,field:'user_type'},
-            isDelet:{type:Sequelize.STRING,defaultValue: 'false',field:'is_delete'}
+            isDelete:{type:Sequelize.STRING,defaultValue: 'false',field:'is_delete'}
         });
         this.model = super.getModel()
         // this.model.sync({alter:true})
