@@ -51,6 +51,84 @@ class SysUserService extends BaseService{
         user[0].roleId=roleId[0].role_id;
         return  user[0];
     }
+
+/*    async saveUser(user,roleId){
+        let transaction;
+        try{
+            transaction = sequelize.transaction();
+            let result = await SysUserModel.model.create(user, {transaction});
+            let userId = result.dataValues.id;
+            let userRole = await SysUserRoleModel.model.create({userId:userId,roleId:roleId},{transaction});
+            transaction.then(function () {
+                transaction.commit()
+            }).catch(function (e) {
+                console.log(e)
+                transaction.rollback()
+            });
+        }catch (e) {
+            console.log(e)
+
+        }
+    }*/
+
+    async saveUser(user,roleId){
+        console.log(user)
+        try {
+            return await sequelize.transaction().then(function (transaction) {
+                return SysUserModel.model.create(user, {transaction})
+                    .then(function (user) {
+                        let userId = user.dataValues.id;
+                        return SysUserRoleModel.model.create(
+                            {userId:userId,roleId:roleId},{transaction})
+                        .then(()=>{
+                            transaction.commit()
+                        })
+                        .catch((e)=>{
+                            console.log(e);
+                            transaction.rollback()
+                        })
+                });
+            }).then(function (result) {
+                return true
+            }).catch(function (err) {
+                console.log(err)
+                return false
+            });
+        }catch (e) {
+            console.log(e)
+            return false
+        }
+
+
+    }
+    async deleteUser(id){
+        try {
+            return await sequelize.transaction().then(function (transaction) {
+                return SysUserModel.model.destroy({where:{id:id},transaction:transaction})
+                    .then(function () {
+                        return SysUserRoleModel.model.destroy(
+                            {where:{userId:id},transaction:transaction})
+                            .then(()=>{
+                                transaction.commit()
+                            })
+                            .catch((e)=>{
+                                console.log(e);
+                                transaction.rollback()
+                            })
+                    });
+            }).then(function (result) {
+                return true
+            }).catch(function (err) {
+                console.log(err)
+                return false
+            });
+        }catch (e) {
+            console.log(e)
+            return false
+        }
+
+
+    }
 }
 
 module.exports= new SysUserService();

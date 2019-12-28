@@ -74,7 +74,60 @@ router.get('/getUserDetailById',async function(req,res,next) {
 })
 
 
-router.post('/addUser', function (req, res, next) {
+router.post('/saveUser', async function (req, res, next) {
+  let user = req.body.user;
+  let roleId = req.body.roleId;
+  //初始密码123456
+  let password = bcrypt.hashSync('123456',salt);
+  user.password = password;
+  let result = await sysUserService.saveUser(user,roleId);
+  if (result){
+    res.json({
+      status: statusCode.SUCCESS.code,
+      msg: statusCode.SUCCESS.description,
+    })
+  }else {
+    res.json({
+      status: statusCode.ERR.code,
+      msg: statusCode.ERR.description,
+    })
+  }
+
+});
+
+router.get('/checkLoginName', async function (req, res, next) {
+  let loginName = req.query.loginName;
+  let result = utils.formatSqlResult(await sysUserService.baseFindByFilter({loginName:loginName}));
+
+  if (result.length<=0){
+    res.json({
+      status: statusCode.SUCCESS.code,
+      msg: statusCode.SUCCESS.description,
+    })
+  }else {
+    res.json({
+      status: statusCode.ERR.code,
+      msg: statusCode.ERR.description,
+    })
+  }
+
+});
+
+router.get('/deleteUser', async function (req, res, next) {
+  let id = req.query.id;
+  let result = await sysUserService.deleteUser(id);
+  if (result){
+    res.json({
+      status: statusCode.SUCCESS.code,
+      msg: statusCode.SUCCESS.description,
+    })
+  }else {
+    res.json({
+      status: statusCode.ERR.code,
+      msg: statusCode.ERR.description,
+    })
+  }
+
 
 });
 

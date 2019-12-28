@@ -22,7 +22,7 @@ router.post('/login', async (req, res, next) => {
   let user = utils.formatSqlResult(await sysUserService.baseFindByFilter({loginName: req.body.userName}));
   if(user.length>0){
     var userPwd = user[0].password;
-    if (bcrypt.compare(pass, userPwd)) {
+    if (await bcrypt.compare(pass, userPwd)) {
       let token = tokenUtil.createToken(user[0].userName, 60 * 60 * 24);
       //let menu = await sysMenuService.getMenuListByUserId(user[0].id);
       //console.log(menu)
