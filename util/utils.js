@@ -15,6 +15,7 @@ module.exports = {
         let firstMenu = menuList.filter(res => !res.parentId)
         // console.log(firstMenu, '父菜单')
         let menu = firstMenu.map(menuItem => {
+          console.log(menuItem)
           let children = this.formatMenu(menuList, menuItem.id)
           menuItem.children = children
           return menuItem

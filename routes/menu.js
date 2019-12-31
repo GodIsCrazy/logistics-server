@@ -117,5 +117,28 @@ router.get('/getMenuDetailById', async (req, res, next) => {
   }
 })
 
+/* *
+ * 获取一级菜单
+  */
+router.get('/AllMenuList', async (req, res, next) => {
+  let status = ''
+  let msg = ''
+  let result = []
+  try {
+    result = await sysMenuService.getAllMenu()
+    status = statusCode.SUCCESS.code,
+      msg = statusCode.SUCCESS.description
+  } catch (error) {
+    status = statusCode.FAILED.code,
+      msg = statusCode.FAILED.description
+  } finally {
+    res.json({
+      status,
+      msg,
+      result
+    })
+  }
+})
+
 module.exports = router;
 

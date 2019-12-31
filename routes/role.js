@@ -12,36 +12,61 @@ const utils = require('../util/utils.js')
 /* GET users listing. */
 
 
-router.get('/roleListByPage',async function(req,res,next) {
+router.get('/roleListByPage', async function (req, res, next) {
   let query = req.query
   console.log(query)
-  let resJson = [];
+  let resJson = {}
   try {
-    resJson.result = await sysUserService.getUserBylikeName(query)
+    let result = {}
+    let data = await sysRoleService.getRoleListByPage(query)
     resJson.status = statusCode.SUCCESS.code;
     resJson.msg = statusCode.SUCCESS.description
-  }catch (e) {
+    result.items = data
+    result.recordCount = data.length
+    result.currentPage = query.currentPage || 1
+    result.pageSize = query.pageSize || 15
+    resJson.result = result
+  } catch (e) {
     console.log(e)
     resJson.status = statusCode.ERR.code;
     resJson.msg = statusCode.ERR.description
-  }finally {
+  } finally {
     res.json({
       ...resJson
     })
   }
 })
 
-router.get('/getRoleList',async function(req,res,next) {
+router.post('/saveRole', async function (req, res, next) {
+  let query = req.body
+  console.log(query)
+  let resJson = {}
+  try {
+    await sysRoleService.saveRole(query)
+    resJson.status = statusCode.SUCCESS.code;
+    resJson.msg = statusCode.SUCCESS.description
+  } catch (e) {
+    console.log(e)
+    resJson.status = statusCode.ERR.code;
+    resJson.msg = statusCode.ERR.description
+  } finally {
+    res.json({
+      ...resJson
+    })
+  }
+})
+
+router.get('/getRoleList', async function (req, res, next) {
   let resJson = [];
   try {
     resJson.result = await sysRoleService.getRoleList();
     resJson.status = statusCode.SUCCESS.code;
     resJson.msg = statusCode.SUCCESS.description
-  }catch (e) {
+  } catch (e) {
     console.log(e)
     resJson.status = statusCode.ERR.code;
     resJson.msg = statusCode.ERR.description
-  }finally {
+  } finally {
     res.json({
       ...resJson
     })
