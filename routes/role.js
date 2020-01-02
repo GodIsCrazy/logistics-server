@@ -14,7 +14,6 @@ const utils = require('../util/utils.js')
 
 router.get('/roleListByPage', async function (req, res, next) {
   let query = req.query
-  console.log(query)
   let resJson = {}
   try {
     let result = {}
@@ -39,11 +38,32 @@ router.get('/roleListByPage', async function (req, res, next) {
 
 router.post('/saveRole', async function (req, res, next) {
   let query = req.body
-  console.log(query)
   let resJson = {}
   try {
-    await sysRoleService.saveRole(query)
+    let falg = await sysRoleService.saveRole(query)
+    if (!falg) { //
+      throw ("失败！")
+    }
     resJson.status = statusCode.SUCCESS.code;
+    resJson.msg = statusCode.SUCCESS.description
+  } catch (e) {
+    console.log(e)
+    resJson.status = statusCode.ERR.code;
+    resJson.msg = statusCode.ERR.description
+  } finally {
+    res.json({
+      ...resJson
+    })
+  }
+})
+
+/* 删除角色 */
+router.get('/deleteRoleById', async function (req, res, next) {
+  let query = req.query
+  let resJson = {}
+  try {
+    await sysRoleService.deleteRoleById(query)
+    resJson.status = statusCode.SUCCESS.code
     resJson.msg = statusCode.SUCCESS.description
   } catch (e) {
     console.log(e)
@@ -60,6 +80,24 @@ router.get('/getRoleList', async function (req, res, next) {
   let resJson = [];
   try {
     resJson.result = await sysRoleService.getRoleList();
+    resJson.status = statusCode.SUCCESS.code;
+    resJson.msg = statusCode.SUCCESS.description
+  } catch (e) {
+    console.log(e)
+    resJson.status = statusCode.ERR.code;
+    resJson.msg = statusCode.ERR.description
+  } finally {
+    res.json({
+      ...resJson
+    })
+  }
+})
+/* 得到角色信息 */
+router.get('/getRoleDetailById', async function (req, res, next) {
+  let resJson = {}
+  let query = req.query
+  try {
+    resJson.result = await sysRoleService.getRoleDetailById(query)
     resJson.status = statusCode.SUCCESS.code;
     resJson.msg = statusCode.SUCCESS.description
   } catch (e) {
