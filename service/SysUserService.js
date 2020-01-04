@@ -55,18 +55,17 @@ class SysUserService extends BaseService{
     async saveUser(user,roleId){
         let transaction;
         let userId = user.id;
+        console.log(userId)
         try{
             transaction =await sequelize.transaction();
             let result
             if (userId){
-                result = await SysUserModel.model.update(user, {where:{id:userId},transaction});
+                await SysUserModel.model.update(user, {where:{id:userId},transaction});
             }else {
-                result = await SysUserModel.model.create(user, {transaction});
+                let result = await SysUserModel.model.create(user, {transaction});
+                userId = result.dataValues.id;
             }
-
-            userId = result.dataValues.id;
             await SysUserRoleModel.model.destroy({where:{userId:userId},transaction})
-
             await SysUserRoleModel.model.create({userId:userId,roleId:roleId},{transaction});
             transaction && transaction.commit() // 提交事务
             return true
@@ -90,8 +89,6 @@ class SysUserService extends BaseService{
             transaction && transaction.rollback()
             return false
         }
-
-
     }
 }
 
