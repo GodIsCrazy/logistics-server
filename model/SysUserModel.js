@@ -11,6 +11,7 @@ class SysUserModel extends BaseModel{
             loginName:{type:Sequelize.STRING,field:'login_name'},
             password:{type:Sequelize.STRING},
             email:{type:Sequelize.STRING},
+            dePass:{type:Sequelize.STRING,defaultValue:'true'},
             userType:{type:Sequelize.STRING,defaultValue:0,field:'user_type'},
             isDelete:{type:Sequelize.STRING,defaultValue: 'false',field:'is_delete'}
         });

@@ -52,78 +52,42 @@ class SysUserService extends BaseService{
         return  user[0];
     }
 
-/*    async saveUser(user,roleId){
-        let transaction;
-        try{
-            transaction = sequelize.transaction();
-            let result = await SysUserModel.model.create(user, {transaction});
-            let userId = result.dataValues.id;
-            let userRole = await SysUserRoleModel.model.create({userId:userId,roleId:roleId},{transaction});
-            transaction.then(function () {
-                transaction.commit()
-            }).catch(function (e) {
-                console.log(e)
-                transaction.rollback()
-            });
-        }catch (e) {
-            console.log(e)
-
-        }
-    }*/
-
     async saveUser(user,roleId){
-        console.log(user)
-        try {
-            return await sequelize.transaction().then(function (transaction) {
-                return SysUserModel.model.create(user, {transaction})
-                    .then(function (user) {
-                        let userId = user.dataValues.id;
-                        return SysUserRoleModel.model.create(
-                            {userId:userId,roleId:roleId},{transaction})
-                        .then(()=>{
-                            transaction.commit()
-                        })
-                        .catch((e)=>{
-                            console.log(e);
-                            transaction.rollback()
-                        })
-                });
-            }).then(function (result) {
-                return true
-            }).catch(function (err) {
-                console.log(err)
-                return false
-            });
+        let transaction;
+        let userId = user.id;
+        try{
+            transaction =await sequelize.transaction();
+            let result
+            if (userId){
+                result = await SysUserModel.model.update(user, {where:{id:userId},transaction});
+            }else {
+                result = await SysUserModel.model.create(user, {transaction});
+            }
+
+            userId = result.dataValues.id;
+            await SysUserRoleModel.model.destroy({where:{userId:userId},transaction})
+
+            await SysUserRoleModel.model.create({userId:userId,roleId:roleId},{transaction});
+            transaction && transaction.commit() // 提交事务
+            return true
         }catch (e) {
             console.log(e)
+            transaction && transaction.rollback()
             return false
         }
-
-
     }
+
     async deleteUser(id){
-        try {
-            return await sequelize.transaction().then(function (transaction) {
-                return SysUserModel.model.destroy({where:{id:id},transaction:transaction})
-                    .then(function () {
-                        return SysUserRoleModel.model.destroy(
-                            {where:{userId:id},transaction:transaction})
-                            .then(()=>{
-                                transaction.commit()
-                            })
-                            .catch((e)=>{
-                                console.log(e);
-                                transaction.rollback()
-                            })
-                    });
-            }).then(function (result) {
-                return true
-            }).catch(function (err) {
-                console.log(err)
-                return false
-            });
+        let transaction;
+        try{
+            transaction =await sequelize.transaction();
+            await SysUserModel.model.destroy({where:{id:id},transaction})
+            await SysUserRoleModel.model.destroy({where:{userId:id},transaction})
+            transaction && transaction.commit() // 提交事务
+            return true
         }catch (e) {
             console.log(e)
+            transaction && transaction.rollback()
             return false
         }
 
